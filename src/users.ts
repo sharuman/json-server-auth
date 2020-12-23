@@ -101,7 +101,7 @@ const create: Handler = (req, res, next) => {
  * Login
  */
 const login: Handler = (req, res, next) => {
-	const { email, password } = req.body as User
+	const { email, password, ...rest} = req.body as User
 	const { db } = req.app
 
 	if (db == null) {
@@ -133,7 +133,7 @@ const login: Handler = (req, res, next) => {
 			})
 		})
 		.then((accessToken: string) => {
-			res.status(200).jsonp({ accessToken })
+			res.status(200).jsonp({ accessToken, ...rest })
 		})
 		.catch((err) => {
 			if (err === 400) res.status(400).jsonp('Incorrect password')
